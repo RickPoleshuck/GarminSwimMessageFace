@@ -44,8 +44,11 @@ class GarminSwimMessageFaceView extends WatchUi.WatchFace {
     }
 
     function getElapsedDistance() as String {
-        var elapsedDistance = Activity.Info.elapsedDistance;
-        return elapsedDistance == null ? "" : elapsedDistance.format("%0.2f");
+        var elapsedDistance = Activity.Info.elapsedDistance.abs();
+        if (elapsedDistance == null) {
+            elapsedDistance = 0.0;
+        }
+        return elapsedDistance.format("%0.1f km");
     }
 
     function getDate() as String {
@@ -67,7 +70,7 @@ class GarminSwimMessageFaceView extends WatchUi.WatchFace {
         dateView.setText(getDate());
 
         var elapsedView = View.findDrawableById("ElapsedLabel") as Text;
-        elapsedView.setText(getElapsedDistance());
+        //elapsedView.setText(getElapsedDistance());
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
