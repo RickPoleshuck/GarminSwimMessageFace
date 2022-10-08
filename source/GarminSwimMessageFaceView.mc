@@ -3,6 +3,7 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.System;
 import Toybox.WatchUi;
+import Toybox.Activity;
 import Toybox.Time.Gregorian;
 
 class GarminSwimMessageFaceView extends WatchUi.WatchFace {
@@ -42,6 +43,11 @@ class GarminSwimMessageFaceView extends WatchUi.WatchFace {
         }
     }
 
+    function getElapsedDistance() as String {
+        var elapsedDistance = Activity.Info.elapsedDistance;
+        return elapsedDistance == null ? "" : elapsedDistance.format("%0.2f");
+    }
+
     function getDate() as String {
         var today = Gregorian.info(Time.now(), Time.FORMAT_MEDIUM);
         return Lang.format("$1$ $2$", [today.month, today.day]);
@@ -59,6 +65,9 @@ class GarminSwimMessageFaceView extends WatchUi.WatchFace {
         var dateView = View.findDrawableById("DateLabel") as Text;
         // dateView.setColor(foregroundColor);
         dateView.setText(getDate());
+
+        var elapsedView = View.findDrawableById("ElapsedLabel") as Text;
+        elapsedView.setText(getElapsedDistance());
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
